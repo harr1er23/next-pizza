@@ -1,9 +1,13 @@
-import { Header } from "@/components/shared/header";
+import { Container, Title, Categories } from "@/components/shared";
 
 export default function Home() {
   return (
     <>
-      <h1 className="">Главная</h1>
+      <Container className="mt-6">
+        <Title text="Все пиццы" size="lg" className="font-extrabold" />
+
+        <Categories />
+      </Container>
     </>
   );
 }

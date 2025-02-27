@@ -67,7 +67,7 @@ const fullItems = [
     {
         text: 'Ананасы',
         value: '8'
-    },
+    }
 ];
 
 export const Filters: React.FC<Props> = ({ className }) => {

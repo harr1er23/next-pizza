@@ -47,29 +47,29 @@ export default function Home() {
                 items: [{price: 490}]
               }
               ]}/>
-              <ProductsGroupList title="Завтрак" categoryId={1} items={[{
-                id: 1,
+              <ProductsGroupList title="Комбо" categoryId={2} items={[{
+                id: 5,
                 name: "Чизбургер-пицца",
                 imageUrl: "https://media.dodostatic.net/image/r:292x292/0194491914e478b4aa3e18d44e07eed9.avif",
                 price: 499,
                 items: [{price: 499}]
               },
               {
-                id: 2,
+                id: 6,
                 name: "Маргарита",
                 imageUrl: "https://media.dodostatic.net/image/r:292x292/11ee7d6105ef6690b86fbde6150b5b0c.avif",
                 price: 550,
                 items: [{price: 550}]
               },
               {
-                id: 3,
+                id: 7,
                 name: "Гавайская",
                 imageUrl: "https://media.dodostatic.net/image/r:292x292/11ee7d617e9339cfb185921a343ad8fd.avif",
                 price: 450,
                 items: [{price: 450}]
               },
               {
-                id: 4,
+                id: 8,
                 name: "Четыре сезона",
                 imageUrl: "https://media.dodostatic.net/image/r:292x292/11ee7d611adf5aad898b8b651186e023.avif",
                 price: 490,

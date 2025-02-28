@@ -5,6 +5,8 @@ import { Container } from './container';
 import { Button } from "../ui";
 
 import { User, ShoppingCart, ArrowRight } from 'lucide-react';
+import { SearchInput } from './search-input';
+import Link from 'next/link';
 
 interface Props {
     className?: string;
@@ -17,12 +19,16 @@ export const Header: React.FC<Props> = ({ className }) => {
             <Container
                 className='flex items-center justify-between py-8'>
 
-                <div className='flex items-center gap-4'>
-                    <Image src="/public/assets/logo.png" alt="Logo" width={35} height={35} />
+                <Link href="/" className='flex items-center gap-2'>
+                    <Image src="/logo.png" alt="Logo" width={35} height={35} />
                     <div>
                         <h1 className='text-2xl uppercase font-black'>Next Pizza</h1>
                         <p className='text-sm text-gray-400 leading-3'>вкусней уже некуда</p>
                     </div>
+                </Link>
+
+                <div className='mx-10 flex-1'>
+                    <SearchInput />
                 </div>
 
                 <div className='flex items-center gap-3'>

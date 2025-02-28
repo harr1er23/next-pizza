@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 
 export const useQueryFilters = (filters: Filters) => {
     const router = useRouter();
+    const prevFiltersRef = React.useRef<string | null>(null)
 
     React.useEffect(() => {
             const params = {
@@ -18,11 +19,13 @@ export const useQueryFilters = (filters: Filters) => {
                 arrayFormat: 'comma',
             });
     
-            router.push(`?${queryString}`, {
-                scroll: false
-            })
+            if (prevFiltersRef.current !== queryString) {
+                prevFiltersRef.current = queryString
+                router.push(`?${queryString}`, {
+                    scroll: false
+                })
+            }
     
-        }, [filters]);
-
+        }, [filters, router]);
 }
 

@@ -1,6 +1,18 @@
 import { Container, Filters, ProductsGroupList, Title, TopBar } from "@/components/shared";
+import { prisma } from "@/prisma/prisma-client";
 
-export default function Home() {
+export default async function Home() {
+  const categories = await prisma.category.findMany({
+    include: {
+      products: {
+        include: {
+          ingredients: true,
+          variations: true,
+        },
+      },
+    },
+  });
+
   return (
     <>
       <Container className="mt-6">
@@ -18,64 +30,14 @@ export default function Home() {
 
           <div className="flex-1">
             <div className="flex flex-col gap-16">
-              <ProductsGroupList title="Пиццы" categoryId={1} items={[{
-                id: 1,
-                name: "Чизбургер-пицца",
-                imageUrl: "https://media.dodostatic.net/image/r:292x292/0194491914e478b4aa3e18d44e07eed9.avif",
-                price: 499,
-                items: [{price: 499}]
-              },
-              {
-                id: 2,
-                name: "Маргарита",
-                imageUrl: "https://media.dodostatic.net/image/r:292x292/11ee7d6105ef6690b86fbde6150b5b0c.avif",
-                price: 550,
-                items: [{price: 550}]
-              },
-              {
-                id: 3,
-                name: "Гавайская",
-                imageUrl: "https://media.dodostatic.net/image/r:292x292/11ee7d617e9339cfb185921a343ad8fd.avif",
-                price: 450,
-                items: [{price: 450}]
-              },
-              {
-                id: 4,
-                name: "Четыре сезона",
-                imageUrl: "https://media.dodostatic.net/image/r:292x292/11ee7d611adf5aad898b8b651186e023.avif",
-                price: 490,
-                items: [{price: 490}]
-              }
-              ]}/>
-              <ProductsGroupList title="Комбо" categoryId={2} items={[{
-                id: 5,
-                name: "Чизбургер-пицца",
-                imageUrl: "https://media.dodostatic.net/image/r:292x292/0194491914e478b4aa3e18d44e07eed9.avif",
-                price: 499,
-                items: [{price: 499}]
-              },
-              {
-                id: 6,
-                name: "Маргарита",
-                imageUrl: "https://media.dodostatic.net/image/r:292x292/11ee7d6105ef6690b86fbde6150b5b0c.avif",
-                price: 550,
-                items: [{price: 550}]
-              },
-              {
-                id: 7,
-                name: "Гавайская",
-                imageUrl: "https://media.dodostatic.net/image/r:292x292/11ee7d617e9339cfb185921a343ad8fd.avif",
-                price: 450,
-                items: [{price: 450}]
-              },
-              {
-                id: 8,
-                name: "Четыре сезона",
-                imageUrl: "https://media.dodostatic.net/image/r:292x292/11ee7d611adf5aad898b8b651186e023.avif",
-                price: 490,
-                items: [{price: 490}]
-              }
-              ]}/>
+              {categories.map(category => (
+                 category.products.length > 0 
+                 && <ProductsGroupList 
+                      key={category.id}
+                      title={category.name} 
+                      categoryId={category.id} 
+                      items={category.products}/>
+              ))}
             </div>
           </div>
         </div>

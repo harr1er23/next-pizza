@@ -17,8 +17,14 @@ export const SearchInput: React.FC<Props> = ({ className }) => {
     const [focused, setFocused] = React.useState(false);
     const [products, setProducts] = React.useState<Product[]>([]);
 
-    useDebounce(() => {
-        Api.products.seacrh(searchQuery).then((items) => setProducts(items));
+    useDebounce(
+        async () => {
+            try{
+                const resp = await Api.products.seacrh(searchQuery)
+                setProducts(resp);
+            }catch(e) {
+                console.error(e);
+            }
     }, 350, [searchQuery]);
 
     const onClickItem = () => {

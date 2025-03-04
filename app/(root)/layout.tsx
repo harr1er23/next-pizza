@@ -1,6 +1,5 @@
+import { Header } from "@/shared/components/shared";
 import type { Metadata } from "next";
-
-import { Header } from "../../shared/components/shared";
 
 export const metadata: Metadata = {
   title: "Next Pizza | Главная",

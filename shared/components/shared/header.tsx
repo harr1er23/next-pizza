@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/utils';
 import Image from '@/node_modules/next/image';
 import React from 'react';
 import { Container } from './container';

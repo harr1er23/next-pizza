@@ -101,8 +101,8 @@ model Cart {
 model CartItem {
     id Int @id @default(autoincrement())
 
-    productItem   ProductVariation @relation(fields: [productItemId], references: [id])
-    productItemId Int
+    productVariations  ProductVariation @relation(fields: [productVariationId], references: [id])
+    productVariationId Int
 
     cart   Cart @relation(fields: [cartId], references: [id])
     cartId Int

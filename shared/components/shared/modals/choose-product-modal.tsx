@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
@@ -9,7 +9,6 @@ import { DialogContent, Dialog } from '@/shared/components/ui/dialog';
 import { ChooseProductForm } from '../choose-product-form';
 import { ProductWithRelations } from '@/@types/prisma';
 import { ChoosePizzaForm } from '../choose-pizza-form';
-import { DialogTitle } from '@radix-ui/react-dialog';
 interface Props {
     product: ProductWithRelations;
     className?: string;

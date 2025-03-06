@@ -16,6 +16,7 @@ import { CartDrawerItem } from "./cart-drawer-item";
 import { getCartItemDetails } from "@/shared/lib";
 import { useCartStore } from "@/shared/store";
 import { PizzaSize, PizzaType } from "@/shared/constants/pizza";
+import { useShallow } from 'zustand/react/shallow'
 
 interface Props {
     className?: string;
@@ -27,15 +28,31 @@ export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({
     className,
     children
 }) => {
-    const { totalAmount, items, fetchCartItems } = useCartStore(state => ({
-        totalAmount: state.totalAmount,
-        items: state.items,
-        fetchCartItems: state.fetchCartItems
-    }));
+    const [
+            totalAmount, 
+            items, 
+            loading, 
+            updateItemQuantity, 
+            fetchCartItems,
+            removeCartItem] = useCartStore(useShallow(state => 
+                [
+                    state.totalAmount, 
+                    state.items,
+                    state.loading,
+                    state.updateItemQuantity,
+                    state.fetchCartItems,
+                    state.removeCartItem
+                ]));
 
     React.useEffect(() => {
         fetchCartItems();
     }, [])
+
+    const onClickCountButton = (id: number, quantity: number, type: 'plus' | 'minus') => {
+        const newQuantity = type === 'plus' ? quantity + 1 : quantity - 1;
+        
+        updateItemQuantity(id, newQuantity);
+    }
 
     return (
         <Sheet>
@@ -49,9 +66,9 @@ export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({
 
                 <div className="-mx-3 mt-5 overflow-auto flex-1 scrollbar">
                     {items.map(item => (
-                        <div className="mb-2">
+                        <div className="mb-2" 
+                        key={item.id}>
                             <CartDrawerItem
-                                key={item.id}
                                 id={item.id}
                                 imageUrl={item.imageUrl}
                                 details={item.pizzaSize && item.pizzaType ? 
@@ -62,6 +79,8 @@ export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({
                                 name={item.name}
                                 price={item.price}
                                 quantity={item.quantity}
+                                onClickRemove={() => removeCartItem(item.id)}
+                                onClickCountButton={type => onClickCountButton(item.id, item.quantity, type)}
                             />
                         </div>
                     ))}

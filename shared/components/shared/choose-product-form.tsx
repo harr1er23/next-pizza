@@ -5,20 +5,22 @@ import { Button } from '../ui';
 import { DialogTitle } from '@radix-ui/react-dialog';
 interface Props {
     imageUrl: string;
+    loading?: boolean;
     name: string;
+    price: number;
     className?: string;
-    onClickAdd?: VoidFunction;
+    onSubmit?: VoidFunction;
 }
 
 export const ChooseProductForm: React.FC<React.PropsWithChildren<Props>> = (
     { 
         name,
+        loading,
         imageUrl,
-        onClickAdd, 
+        price,
+        onSubmit, 
         className 
     }) => {
-        const textDetails = '30 см, традиционное тесто 30, 590 г';
-        const totalPrice = 350;
 
         return <div className={cn("flex flex-1", className)}>
             <div className="flex items-center justify-center flex-1 relative w-full">
@@ -32,11 +34,11 @@ export const ChooseProductForm: React.FC<React.PropsWithChildren<Props>> = (
             <div className='w-[490px] bg-[#f7f6f5] p-7'>
                 <DialogTitle className='font-extrabold text-2xl mb-1'>{name}</DialogTitle>
 
-                <p className='text-gray-400'>{textDetails}</p>
-
                 <Button
+                    loading={loading}
+                    onClick={() => onSubmit?.()}
                     className='h-[55px] px-10 text-base rounded-[18px] w-full mt-10'>
-                        Добавить в корзину за {totalPrice} ₽
+                        Добавить в корзину за {price} ₽
                     </Button>
             </div>
         </div>

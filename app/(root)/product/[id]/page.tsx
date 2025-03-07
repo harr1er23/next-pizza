@@ -4,7 +4,8 @@ import { prisma } from "@/prisma/prisma-client";
 
 import { Container, GroupVariants, PizzaImage, Title } from "@/shared/components/shared";
 
-export default async function ProductPage({ params: { id } }: { params: { id: string } }) {
+export default async function ProductPage({ params }: { params: Record<string, string> }) {
+    const { id } = await Promise.resolve(params); 
     const product = await prisma.product.findFirst({ where: { id: Number(id) } });
 
     if (!product) {
@@ -19,24 +20,6 @@ export default async function ProductPage({ params: { id } }: { params: { id: st
                 <Title text={product.name} size="md" className="font-extrabold mb-1" />
 
                 <p className="text-gray-400">asdasdadas</p>
-
-                <GroupVariants
-                    selectedValue="2"
-                    items={[
-                        {
-                            name: "Маленькая",
-                            value: '1'
-                        },
-                        {
-                            name: "Средня",
-                            value: '2'
-                        },
-                        {
-                            name: "Большая",
-                            value: '3'
-                        }
-                    ]}
-                />
             </div>
         </div>
     </Container>

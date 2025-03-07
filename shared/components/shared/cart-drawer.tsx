@@ -4,6 +4,7 @@ import React from "react";
 import {
     Sheet,
     SheetContent,
+    SheetDescription,
     SheetFooter,
     SheetHeader,
     SheetTitle,
@@ -63,6 +64,8 @@ export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({
                         Корзина
                     </SheetTitle>
                 </SheetHeader>
+
+                <SheetDescription className="hidden"></SheetDescription>
 
                 <div className="-mx-3 mt-5 overflow-auto flex-1 scrollbar">
                     {items.map(item => (

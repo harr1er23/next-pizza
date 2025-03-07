@@ -26,6 +26,6 @@ export const useQueryFilters = (filters: Filters) => {
                 })
             }
     
-        }, [filters, router]);
+        }, [filters]);
 }
 

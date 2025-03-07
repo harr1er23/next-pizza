@@ -2,7 +2,6 @@ import { cn } from '@/shared/lib/utils';
 import React from 'react';
 import { Title } from './title';
 import { Button } from '../ui';
-import { DialogTitle } from '@radix-ui/react-dialog';
 interface Props {
     imageUrl: string;
     loading?: boolean;
@@ -32,7 +31,7 @@ export const ChooseProductForm: React.FC<React.PropsWithChildren<Props>> = (
             </div>
 
             <div className='w-[490px] bg-[#f7f6f5] p-7'>
-                <DialogTitle className='font-extrabold text-2xl mb-1'>{name}</DialogTitle>
+                <Title text={name} className='font-extrabold text-2xl mb-1'></Title>
 
                 <Button
                     loading={loading}

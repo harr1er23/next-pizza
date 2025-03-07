@@ -14,6 +14,7 @@ import { Ingredient, ProductVariation } from '@prisma/client';
 
 import { usePizzaOptions } from '@/shared/hooks';
 import { getPizzaDetails } from '@/shared/lib';
+import { Title } from './title';
 
 interface Props {
     imageUrl: string;
@@ -48,7 +49,7 @@ export const ChoosePizzaForm: React.FC<React.PropsWithChildren<Props>> = (
             <PizzaImage imageUrl={imageUrl} size={size} altName={name} />
 
             <div className='w-[490px] bg-[#f7f6f5] p-7'>
-                <DialogTitle className='font-extrabold text-2xl mb-1'>{name}</DialogTitle>
+                <Title text={name} className='font-extrabold text-2xl mb-1'></Title>
 
                 <p className='text-gray-400'>{textDetails}</p>
 

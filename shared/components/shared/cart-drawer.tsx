@@ -22,6 +22,7 @@ import { useShallow } from 'zustand/react/shallow'
 import Image from "next/image";
 import { Title } from "./title";
 import { cn } from "@/shared/lib/utils";
+import { useCart } from "@/shared/hooks";
 
 interface Props {
     className?: string;
@@ -29,29 +30,11 @@ interface Props {
 }
 
 
-export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({
-    className,
+export const CartDrawer: React.FC<React.PropsWithChildren> = ({
     children
 }) => {
-    const [
-            totalAmount, 
-            items, 
-            loading, 
-            updateItemQuantity, 
-            fetchCartItems,
-            removeCartItem] = useCartStore(useShallow(state => 
-                [
-                    state.totalAmount, 
-                    state.items,
-                    state.loading,
-                    state.updateItemQuantity,
-                    state.fetchCartItems,
-                    state.removeCartItem
-                ]));
-
-    React.useEffect(() => {
-        fetchCartItems();
-    }, [])
+    const { totalAmount, items, removeCartItem, updateItemQuantity} = useCart();
+    const [redirecting, setRedirecting] = React.useState(false);
 
     const onClickCountButton = (id: number, quantity: number, type: 'plus' | 'minus') => {
         const newQuantity = type === 'plus' ? quantity + 1 : quantity - 1;
@@ -126,9 +109,11 @@ export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({
                                         <span className="font-bold text-lg">{totalAmount} ₽</span>
                                     </div>
 
-                                    <Link href="/cart">
+                                    <Link href="/checkout">
                                         <Button
                                             type="submit"
+                                            onClick={() => setRedirecting(true)}
+                                            loading={redirecting}
                                             className="w-full h-12 text-base"
                                             >
                                             Оформить заказ

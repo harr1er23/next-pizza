@@ -20,3 +20,6 @@ export { CartDrawer } from "./cart-drawer";
 export { CountButton } from "./count-button";
 export { CountIconButton } from "./count-icon-button";
 export { Product } from "./product";
+export { CheckoutDetails } from "./checkout-details";
+export { CheckoutItem } from "./checkout-item"
+export { CheckoutItemSkeleton } from "./checkout-item-skeleton";

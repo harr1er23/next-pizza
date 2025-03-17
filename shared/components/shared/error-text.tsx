@@ -3,7 +3,7 @@ import React from 'react'
 
 interface Props {
     text: string;
-    className: string;
+    className?: string;
 }
 
 export const ErrorText: React.FC<Props> = ({ text, className }) => {

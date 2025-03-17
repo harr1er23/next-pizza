@@ -16,18 +16,11 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { CartDrawerItem } from "./cart-drawer-item";
 import { getCartItemDetails } from "@/shared/lib";
-import { useCartStore } from "@/shared/store";
 import { PizzaSize, PizzaType } from "@/shared/constants/pizza";
-import { useShallow } from 'zustand/react/shallow'
 import Image from "next/image";
 import { Title } from "./title";
 import { cn } from "@/shared/lib/utils";
 import { useCart } from "@/shared/hooks";
-
-interface Props {
-    className?: string;
-    children: any;
-}
 
 
 export const CartDrawer: React.FC<React.PropsWithChildren> = ({

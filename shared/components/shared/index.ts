@@ -12,7 +12,6 @@ export { ProductsGroupList } from "./products-group-list";
 export { SearchInput } from "./search-input";
 export { PizzaImage } from "./pizza-image";
 export { GroupVariants } from "./group-variants";
-export * from "./modals";
 export { ChooseProductForm } from "./choose-product-form";
 export { IngredientItem } from "./ingredient-item";
 export { CartButton } from "./cart-button";
@@ -23,3 +22,9 @@ export { Product } from "./product";
 export { CheckoutDetails } from "./checkout-details";
 export { CheckoutItem } from "./checkout-item"
 export { CheckoutItemSkeleton } from "./checkout-item-skeleton";
+export { CheckoutSidebar } from "./checkout-sidebar";
+export { RequiredSymbol } from "./required-symbol";
+export { ErrorText } from './error-text';
+export { ClearButton } from "./clear-button";
+export * from './form';
+export * from "./modals";

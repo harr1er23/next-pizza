@@ -5,6 +5,7 @@ import { Button, Skeleton } from "../ui";
 import { cn } from "@/shared/lib/utils";
 
 interface Props {
+    submitting?: boolean;
     loading: boolean; 
     totalAmount: number;
     className?: string;
@@ -13,7 +14,7 @@ interface Props {
 const DISCOUNT_PERCENT = 7;
 const DELIVERY_PRICE = 250;
 
-export const CheckoutSidebar: React.FC<Props> = ({ totalAmount, loading, className }) => {
+export const CheckoutSidebar: React.FC<Props> = ({ submitting, totalAmount, loading, className }) => {
     
     const totalSumOrder = (): number => {
         const totalPercent = Number(((totalAmount / 100) * DISCOUNT_PERCENT).toFixed(2));
@@ -47,7 +48,7 @@ export const CheckoutSidebar: React.FC<Props> = ({ totalAmount, loading, classNa
                 </div>
             } value={DISCOUNT_PERCENT + ' %'} />
 
-            <Button disabled={loading} type="submit" className="w-full h-14 rounded-2xl mt-6 text-base font-bold">
+            <Button loading={submitting} disabled={loading} type="submit" className="w-full h-14 rounded-2xl mt-6 text-base font-bold">
                 Перейти к оплате <ArrowRight/>
             </Button>
         </WhiteBlock>

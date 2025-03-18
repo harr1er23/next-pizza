@@ -1,3 +1,5 @@
+'use client';
+
 
 import { cn } from '@/shared/lib/utils';
 import Image from '@/node_modules/next/image';
@@ -9,7 +11,10 @@ import { User } from 'lucide-react';
 import { SearchInput } from './search-input';
 import Link from 'next/link';
 import { CartButton } from './cart-button';
-import { SearchParamsHandler } from '@/shared/hooks';
+import { useSession, signIn } from 'next-auth/react';
+import toast from 'react-hot-toast';
+import { useSearchParams } from 'next/navigation';
+import { ProfileButton } from './profile-button';
 
 interface Props {
     isCheckout?: boolean;
@@ -17,6 +22,16 @@ interface Props {
 }
 
 export const Header: React.FC<Props> = ({ className, isCheckout }) => {
+    const { data: session } = useSession();
+
+    const searchParams = useSearchParams();
+
+    React.useEffect(() => {
+        if(searchParams.has('paid')) {
+            toast.success('Заказ успешно оплачен! Информация отправлена на почту.')
+        }
+    }, [searchParams])
+
     return (
         <header
             className={cn('border-b', className)}>
@@ -37,17 +52,12 @@ export const Header: React.FC<Props> = ({ className, isCheckout }) => {
                 }
 
                 <div className='flex items-center gap-3'>
-                    <Button variant="outline" className="flex items-center gap-1">
-                        <User size={16} />
-                        Войти
-                    </Button>
+                    <ProfileButton />
 
                     { !isCheckout && <CartButton /> }
                 </div>
 
             </Container>
-
-            <SearchParamsHandler />
         </header>
     );
 };

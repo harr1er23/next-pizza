@@ -1,13 +1,15 @@
+
 import { cn } from '@/shared/lib/utils';
 import Image from '@/node_modules/next/image';
 import React from 'react';
 import { Container } from './container';
 import { Button } from "../ui";
 
-import { User, ShoppingCart, ArrowRight } from 'lucide-react';
+import { User } from 'lucide-react';
 import { SearchInput } from './search-input';
 import Link from 'next/link';
 import { CartButton } from './cart-button';
+import { SearchParamsHandler } from '@/shared/hooks';
 
 interface Props {
     isCheckout?: boolean;
@@ -44,6 +46,8 @@ export const Header: React.FC<Props> = ({ className, isCheckout }) => {
                 </div>
 
             </Container>
+
+            <SearchParamsHandler />
         </header>
     );
 };

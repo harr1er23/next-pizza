@@ -6,10 +6,12 @@ import { Filters } from "./use-filters";
 import { useRouter } from "next/navigation";
 
 export const useQueryFilters = (filters: Filters) => {
+    const isMounted = React.useRef(false);
     const router = useRouter();
     const prevFiltersRef = React.useRef<string | null>(null)
 
     React.useEffect(() => {
+        if(isMounted.current) {
             const params = {
                 ...filters.prices,
                 pizzaTypes: Array.from(filters.pizzaTypes),
@@ -27,7 +29,9 @@ export const useQueryFilters = (filters: Filters) => {
                     scroll: false
                 })
             }
-    
-        }, [filters]);
+        }   
+
+        isMounted.current = true;
+    }, [filters]);
 }
 

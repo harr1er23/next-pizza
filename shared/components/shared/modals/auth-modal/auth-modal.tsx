@@ -29,7 +29,7 @@ export const AuthModal: React.FC<Props> = ({ open, onClose, className }) => {
         <DialogContent className='w-[450px] bg-white p-10'>
             <DialogTitle className='hidden'>Авторизация</DialogTitle>
             
-            {type === "login" ? <LoginForm onClose={handleClose} /> : <RegisterForm />}
+            {type === "login" ? <LoginForm onClose={handleClose} /> : <RegisterForm onClose={handleClose}/>}
 
             <hr/>
 
@@ -69,7 +69,7 @@ export const AuthModal: React.FC<Props> = ({ open, onClose, className }) => {
                 onClick={onSwitchType} 
                 type='button' 
                 className='h-12'
-            >{type === 'login' ? 'Авторизация' : 'Регистрация'}</Button>
+            >{type === 'login' ? 'Регистрация' : 'Авторизация'}</Button>
         </DialogContent>
     </Dialog>    
   )

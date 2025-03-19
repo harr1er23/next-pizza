@@ -13,7 +13,7 @@ model User {
     email    String @unique
     password String
 
-    verified         DateTime
+    verified         DateTime?
     role             UserRole          @default(USER)
     orders           Order[]
     cart             Cart?
@@ -145,7 +145,7 @@ model VerificationCode {
     user   User @relation(fields: [userId], references: [id])
     userId Int  @unique
 
-    code String @unique
+    code String
 
     createdAt DateTime @default(now())
 

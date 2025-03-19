@@ -1,3 +1,5 @@
+'use client';
+
 import { Button, Dialog } from '@/shared/components/ui';
 import { DialogContent, DialogTitle } from '@/shared/components/ui/dialog';
 import { signIn } from 'next-auth/react';

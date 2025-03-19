@@ -15,6 +15,7 @@ import { useSession, signIn } from 'next-auth/react';
 import toast from 'react-hot-toast';
 import { useSearchParams } from 'next/navigation';
 import { ProfileButton } from './profile-button';
+import { AuthModal } from './modals';
 
 interface Props {
     isCheckout?: boolean;
@@ -23,6 +24,7 @@ interface Props {
 
 export const Header: React.FC<Props> = ({ className, isCheckout }) => {
     const { data: session } = useSession();
+    const [openAuthModal, setOpenAuthModal] = React.useState(false);
 
     const searchParams = useSearchParams();
 
@@ -52,7 +54,9 @@ export const Header: React.FC<Props> = ({ className, isCheckout }) => {
                 }
 
                 <div className='flex items-center gap-3'>
-                    <ProfileButton />
+                    <AuthModal open={openAuthModal} onClose={() => setOpenAuthModal(false)}/>
+
+                    <ProfileButton onClickSignIn={() => setOpenAuthModal(true)}/>
 
                     { !isCheckout && <CartButton /> }
                 </div>

@@ -9,3 +9,5 @@ export { Skeleton } from "./skeleton";
 export { Slider } from "./slider";
 export { RangeSlider } from "./range-slider";
 export { Textarea } from "./textarea";
+export { InputOTP } from "./input-otp";
+export * from './form';

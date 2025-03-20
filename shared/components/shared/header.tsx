@@ -32,6 +32,10 @@ export const Header: React.FC<Props> = ({ className, isCheckout }) => {
         if(searchParams.has('paid')) {
             toast.success('Заказ успешно оплачен! Информация отправлена на почту.')
         }
+
+        if(searchParams.has('verified')) {
+            toast.success('Почта успешно подтверждена!')
+        }
     }, [searchParams])
 
     return (

@@ -1,5 +1,5 @@
 import { prisma } from '@/prisma/prisma-client';
-import { Container, ProfileForm } from '@/shared/components'
+import { ProfileForm } from '@/shared/components'
 import { getUserSession } from '@/shared/lib/get-user-session';
 import { redirect } from 'next/navigation';
 import React from 'react'

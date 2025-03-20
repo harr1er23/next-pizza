@@ -2,7 +2,7 @@
 
 import { prisma } from "@/prisma/prisma-client";
 import { CheckoutFormValues } from "@/shared/constants/checkout-form-schema";
-import { createPayment } from "@/shared/lib";
+import { createPayment, sendMail } from "@/shared/lib";
 import { getUserSession } from "@/shared/lib/get-user-session";
 import { OrderStatus, Prisma } from "@prisma/client";
 import { hashSync } from "bcrypt";
@@ -178,7 +178,13 @@ export async function registerUser(body: Prisma.UserCreateInput) {
         });
 
         //TODO: отправака письма, пофиксить баг с письмами
+        // await sendMail({
+        //     sendTo: body.email,
+        //     subject: 'Код подтверждения для завершения регистрации',
+        //     text: 'test'
+        // });
 
+        return code;
     } catch(err) {
         console.log('Error [CREATE_USER]', err);
         throw err;

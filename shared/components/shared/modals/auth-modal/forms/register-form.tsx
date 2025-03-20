@@ -5,13 +5,16 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { FormInput } from '../../../form';
 import { Button } from '@/shared/components/ui';
 import toast from 'react-hot-toast';
-import { signIn } from 'next-auth/react';
+import { registerUser } from '@/app/actions';
+import { useRouter } from 'next/navigation';
 
 interface Props {
     onClose?: VoidFunction;
 }
 
 export const RegisterForm: React.FC<Props> = ({ onClose }) => {
+    const router = useRouter();
+
     const form = useForm<TFormRegisterValues>({
         resolver: zodResolver(formRegisterSchema),
         defaultValues: {
@@ -24,18 +27,17 @@ export const RegisterForm: React.FC<Props> = ({ onClose }) => {
 
     const onSubmit = async (data: TFormRegisterValues) => {
         try {
-            const resp = await signIn('credentials', {
-                ...data,
-                redirect: false
-            });
-
-            if(!resp?.ok) {
-                throw Error();
-            }
-
-            toast.success('Вы успешно зарегистрировали аккаунт!');
+            const code = await registerUser({
+              email: data.email,
+              fullName: data.fullName,
+              password: data.password
+            })
+            
+            toast.success('Регистрация успешна! На вашу почту отправлено письмо с кодом подтверждения.');
             
             onClose?.();
+
+            router.push(`/confirm-code?code=${code}`);
         } catch(err) {
             console.error('Error [REGISTER]', err);
             toast.error('Не удалось зарегистрировать аккаунт');

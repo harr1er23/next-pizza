@@ -26,7 +26,7 @@ export async function createOrder(data: CheckoutFormValues) {
                         productVariations: {
                             include: {
                                 product: true
-                            },
+                            }
                         },
                     },
                 },
@@ -47,6 +47,7 @@ export async function createOrder(data: CheckoutFormValues) {
         const order = await prisma.order.create({
             data: {
                 token: cartToken,
+                userId: userCart.userId,
                 fullName: data.firstName + ' ' + data.lastName,
                 email: data.email,
                 phone: data.phone,
@@ -55,7 +56,6 @@ export async function createOrder(data: CheckoutFormValues) {
                 totalAmount: userCart.totalAmount,
                 status: OrderStatus.PENDING,
                 items: JSON.stringify(userCart.items)
-
             }
         })
 

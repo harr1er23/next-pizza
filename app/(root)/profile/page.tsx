@@ -1,10 +1,26 @@
 import { prisma } from '@/prisma/prisma-client';
-import { ProfileForm } from '@/shared/components'
+import { Container, ProfileForm, UserOrders } from '@/shared/components'
 import { getUserSession } from '@/shared/lib/get-user-session';
+import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import React from 'react'
 
 export default async function ProfilePage () {
+    const cookieStore = await cookies();
+    const cartToken = cookieStore.get('cartToken')?.value; 
+
+    const orders = await prisma.order.findMany({
+        where: {
+            token: cartToken
+        },
+        select: {
+            items: true,
+            id: true,
+            status: true,
+            totalAmount: true
+        }
+    })
+
     const session = await getUserSession();
     
     if(!session) {
@@ -18,6 +34,10 @@ export default async function ProfilePage () {
     }
 
     return (
-        <ProfileForm data={user}/>
+        <Container>
+            <ProfileForm data={user}/>
+
+            <UserOrders orders={orders}/>
+        </Container>
   )
 }

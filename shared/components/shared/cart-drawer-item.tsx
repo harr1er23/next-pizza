@@ -34,11 +34,11 @@ export const CartDrawerItem: React.FC<Props> = ({
                 <hr className="my-3"/>
             
                 <div className="flex items-center justify-between">
-                    <CountButton onClick={onClickCountButton} value={quantity}/>
+                    {onClickCountButton && <CountButton onClick={onClickCountButton} value={quantity}/> }
 
                     <div className="flex items-center gap-3">
                         <CartItem.Price value={price}/>
-                        <Trash2Icon onClick={onClickRemove} size={20} className="text-gray-400 cursor-pointer hover:text-gray-600"/>
+                        {onClickRemove && <Trash2Icon onClick={onClickRemove} size={20} className="text-gray-400 cursor-pointer hover:text-gray-600"/>}
                     </div>
                 </div>
             </div>

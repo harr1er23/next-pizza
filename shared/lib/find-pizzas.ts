@@ -1,10 +1,11 @@
+import { PageProps } from "@/.next/types/app/(root)/page";
 import { prisma } from "@/prisma/prisma-client";
 
 export interface GetSearchParams {
     query?: string;
     sortBy?: string;
     sizes?: string;
-    pizzaTypes: string;
+    pizzaTypes?: string;
     ingredients?: string;
     priceFrom?: string;
     priceTo?: string;

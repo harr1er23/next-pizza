@@ -9,7 +9,8 @@ interface ProductPageProps {
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
-    const { id } = await Promise.resolve(params); 
+    const id = params.id;
+     
     const product = await prisma.product.findFirst({ where: { id: Number(id) }, include: {
         ingredients: true,
         category: {

@@ -1,4 +1,4 @@
-import { Container, Filters, ProductsGroupList, Title, TopBar } from "@/shared/components/shared";
+import { Container, Filters, ProductsGroupList, Stories, Title, TopBar } from "@/shared/components/shared";
 import { Suspense } from "react";
 import { findPizzas, GetSearchParams } from "@/shared/lib/find-pizzas";
 
@@ -9,6 +9,8 @@ export default async function Home({ searchParams}: { searchParams: GetSearchPar
     <>
       <Container className="mt-6">
         <Title text="Все пиццы" size="lg" className="font-extrabold" />
+
+        <Stories />
 
       </Container>
 

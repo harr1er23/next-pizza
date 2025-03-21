@@ -13,9 +13,6 @@ interface Props {
 }
 
 export const UserOrders: React.FC<Props> = ({ className, orders}) => {
-    orders.forEach((element: any) => {
-        JSON.parse(element.items).map((obj: any) => console.log(orders, obj.productVariations))
-    });
   return (
     <div className={cn('flex flex-col gap-2 mt-10', className)}>
         <Title text='Ваши заказы' className='font-extrabold' size='lg'/>
@@ -35,7 +32,8 @@ export const UserOrders: React.FC<Props> = ({ className, orders}) => {
             </div>
 
             {JSON.parse(order.items).map((item: any) => (
-                <CartDrawerItem 
+                <CartDrawerItem
+                    key={item.productVariations.id} 
                     id={item.productVariations.id} 
                     details={item.productVariations.size && item.productVariations.pizzaType ? 
                             getCartItemDetails(

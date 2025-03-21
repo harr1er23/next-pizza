@@ -74,7 +74,6 @@ export async function createOrder(data: CheckoutFormValues) {
             }
         })
 
-        //TODO: Сделать создание ссылки оплаты
         const paymentData = await createPayment({
             amount: order.totalAmount,
             orderId: order.id,

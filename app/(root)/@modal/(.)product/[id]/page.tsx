@@ -4,8 +4,10 @@ import { prisma } from "@/prisma/prisma-client";
 
 import { ChooseProductModal } from "@/shared/components/shared";
 
-export default async function ProductModalPage({ params }: { params: Record<string, string> }) {
-    const { id } = await Promise.resolve(params); 
+export type paramsType = Promise<{ id: string }>;
+
+export default async function ProductModalPage(props: { params: paramsType }) {
+    const { id } = await props.params;
 
     const product = await prisma.product.findFirst({
         where: {

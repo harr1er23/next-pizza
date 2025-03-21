@@ -10,7 +10,7 @@ type SliderProps = {
     min: number;
     max: number;
     step: number;
-    formatLabel?: (value: number) => void;
+    formatLabel?: (value: number) => string | number;
     value?: number[] | readonly number[];
     onValueChange?: (values: number[]) => void;
 }

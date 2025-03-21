@@ -54,7 +54,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren> = ({
                                 <Title size="md" text="Коризна пуста" className="text-center font-bold my-2"/>
                                 <p className="text-center text-neutral-500 mb-5">Добавьте хотя бы один товар, чтобы оформить заказ</p>
                             
-                                <SheetClose>
+                                <SheetClose asChild>
                                     <Button className="w-56 h-12 text-base" size="lg">
                                         <ArrowLeft className="w-5 mr-2"/>
                                         Вернуться назад

@@ -6,17 +6,26 @@ import { getCartItemDetails } from '@/shared/lib';
 import { PizzaSize, PizzaType } from '@/shared/constants/pizza';
 import { Check, CircleDashed } from 'lucide-react';
 import { Button } from '../ui';
+import { OrderStatus } from '@prisma/client';
+import { JsonValue } from '@prisma/client/runtime/library';
 
 interface Props {
     className?: string;
-    orders: any;
+    orders: OrderItem[];
+}
+
+type OrderItem = {
+    id: number;
+    status: OrderStatus;
+    totalAmount: number;
+    items: JsonValue | null;
 }
 
 export const UserOrders: React.FC<Props> = ({ className, orders}) => {
   return (
     <div className={cn('flex flex-col gap-2 mt-10', className)}>
         <Title text='Ваши заказы' className='font-extrabold' size='lg'/>
-       {orders.map((order: any) => (
+       {orders.map(order => (
          <div key={order.id} className='flex flex-col gap-2'>
             <div className='flex justify-between items-center'>
               <div className='flex items-center gap-3'>
@@ -31,20 +40,23 @@ export const UserOrders: React.FC<Props> = ({ className, orders}) => {
               </div>
             </div>
 
-            {JSON.parse(order.items).map((item: any) => (
-                <CartDrawerItem
-                    key={item.productVariations.id} 
-                    id={item.productVariations.id} 
-                    details={item.productVariations.size && item.productVariations.pizzaType ? 
-                            getCartItemDetails(
-                                item.ingredients, 
-                                item.productVariations.pizzaType as PizzaType, 
-                                item.productVariations.size as PizzaSize) : ''}
-                    name={item.productVariations.product.name} 
-                    price={item.productVariations.price} 
-                    imageUrl={item.productVariations.product.imageUrl} 
-                    quantity={item.productVariations.quantity} />
-            ))}
+            {order.items && typeof order.items === 'string' 
+              ? JSON.parse(order.items).map((item: any) => (
+                  <CartDrawerItem
+                      key={item.productVariations.id} 
+                      id={item.productVariations.id} 
+                      details={item.productVariations.size && item.productVariations.pizzaType ? 
+                              getCartItemDetails(
+                                  item.ingredients, 
+                                  item.productVariations.pizzaType as PizzaType, 
+                                  item.productVariations.size as PizzaSize) : ''}
+                      name={item.productVariations.product.name} 
+                      price={item.productVariations.price} 
+                      imageUrl={item.productVariations.product.imageUrl} 
+                      quantity={item.productVariations.quantity} />
+              ))
+              : null
+            }
          </div>
        ))
        }

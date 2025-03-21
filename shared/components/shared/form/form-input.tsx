@@ -1,3 +1,5 @@
+'use client';
+
 import { cn } from "@/shared/lib/utils";
 import { Input } from "../../ui";
 import { RequiredSymbol } from "../required-symbol";

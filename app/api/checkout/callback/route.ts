@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'Order not found!' });
         }
 
-        const isSucceeded = body.object.status = 'succeeded'
+        const isSucceeded = body.object.status === 'succeeded';
 
         await prisma.order.update({
             where: {
@@ -27,6 +27,8 @@ export async function POST(req: NextRequest) {
                 status: isSucceeded ? OrderStatus.SUCCEEDED : OrderStatus.CANCELLED,
             },
         });
+
+        return NextResponse.json({ success: true });
     } catch(err) {
         console.log('[Checkout Callback] Error:', err)
         return NextResponse.json({ error: 'Server error'})

@@ -1,3 +1,5 @@
+'use client';
+
 import { cn } from '@/shared/lib/utils';
 import Link from 'next/link';
 import React from 'react';
@@ -5,6 +7,7 @@ import { Title } from './title';
 import { Plus } from 'lucide-react';
 import { Button } from '../ui';
 import { Ingredient } from '@prisma/client';
+import { useRouter } from 'next/navigation';
 
 interface Props {
     id: number;
@@ -24,6 +27,7 @@ export const ProductCard: React.FC<Props> = (
         ingredients,
         className
     }) => {
+        const router = useRouter();
     return (
         <div className={cn("", className)}>
             <Link href={`/product/${id}`}>
@@ -47,6 +51,7 @@ export const ProductCard: React.FC<Props> = (
                 </span>
 
                 <Button
+                    onClick={() => router.push(`/product/${id}`)}
                     variant="secondary"
                     className="text-base font-bold">
                     <Plus size={20} className="mr-1" />

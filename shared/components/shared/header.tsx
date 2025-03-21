@@ -5,15 +5,11 @@ import { cn } from '@/shared/lib/utils';
 import Image from '@/node_modules/next/image';
 import React from 'react';
 import { Container } from './container';
-import { Button } from "../ui";
-
-import { User } from 'lucide-react';
 import { SearchInput } from './search-input';
 import Link from 'next/link';
 import { CartButton } from './cart-button';
-import { useSession, signIn } from 'next-auth/react';
 import toast from 'react-hot-toast';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { ProfileButton } from './profile-button';
 import { AuthModal } from './modals';
 
@@ -23,18 +19,24 @@ interface Props {
 }
 
 export const Header: React.FC<Props> = ({ className, isCheckout }) => {
-    const { data: session } = useSession();
     const [openAuthModal, setOpenAuthModal] = React.useState(false);
 
     const searchParams = useSearchParams();
+    const router = useRouter();
 
     React.useEffect(() => {
         if(searchParams.has('paid')) {
-            toast.success('Заказ успешно оплачен! Информация отправлена на почту.')
+            toast.success('Заказ успешно оплачен! Информация отправлена на почту.');
+            const newParams = new URLSearchParams(searchParams.toString());
+            newParams.delete("paid");
+            router.replace(`?${newParams.toString()}`, { scroll: false });
         }
 
         if(searchParams.has('verified')) {
-            toast.success('Почта успешно подтверждена!')
+            toast.success('Почта успешно подтверждена!');
+            const newParams = new URLSearchParams(searchParams.toString());
+            newParams.delete("verified");
+            router.replace(`?${newParams.toString()}`, { scroll: false });
         }
     }, [searchParams])
 

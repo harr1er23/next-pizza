@@ -18,6 +18,9 @@ export default async function ProfilePage () {
             id: true,
             status: true,
             totalAmount: true
+        },
+        orderBy: {
+            createdAt: 'desc'
         }
     })
 

@@ -5,6 +5,7 @@ import { CartDrawerItem } from './cart-drawer-item';
 import { getCartItemDetails } from '@/shared/lib';
 import { PizzaSize, PizzaType } from '@/shared/constants/pizza';
 import { Check, CircleDashed } from 'lucide-react';
+import { Button } from '../ui';
 
 interface Props {
     className?: string;
@@ -20,10 +21,17 @@ export const UserOrders: React.FC<Props> = ({ className, orders}) => {
         <Title text='Ваши заказы' className='font-extrabold' size='lg'/>
        {orders.map((order: any) => (
          <div key={order.id} className='flex flex-col gap-2'>
-            <div className='flex items-center gap-3'>
-                <Title text={`Заказ № ${order.id}`} className='font-bold'/>
+            <div className='flex justify-between items-center'>
+              <div className='flex items-center gap-3'>
+                  <Title text={`Заказ № ${order.id}`} className='font-bold'/>
 
-                {order.status === 'PENDING' ? <CircleDashed className='text-primary'/> : order.status === 'SUCCEEDED' && <Check className='text-green-500'/>}
+                  {order.status === 'PENDING' ? <CircleDashed className='text-primary'/> : order.status === 'SUCCEEDED' && <Check className='text-green-500'/>}
+              </div>
+
+              <div className='flex flex-col gap-3'>
+                <span className='text-lg font-bold'>Сумма: {order.totalAmount} ₽</span>
+                {order.status === 'PENDING' && <Button className='ml-auto' variant='default'>Оплатить заказ</Button>}
+              </div>
             </div>
 
             {JSON.parse(order.items).map((item: any) => (
@@ -40,7 +48,8 @@ export const UserOrders: React.FC<Props> = ({ className, orders}) => {
                     quantity={item.productVariations.quantity} />
             ))}
          </div>
-       ))}
+       ))
+       }
     </div>
   )
 }

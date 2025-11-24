@@ -154,42 +154,144 @@ npm run dev
 #### User (Пользователь)
 ```prisma
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  password  String
-  phone     String?
-  address   String?
-  orders    Order[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+    id       Int    @id @default(autoincrement())
+    fullName String
+    email    String @unique
+    password String
+
+    verified         DateTime?
+    role             UserRole          @default(USER)
+    orders           Order[]
+    cart             Cart?
+    verificationCode VerificationCode?
+
+    provider   String?
+    providerId String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 ```
 
 #### Product (Продукт)
 ```prisma
 model Product {
-  id          String   @id @default(cuid())
-  name        String
-  description String?
-  imageUrl    String
-  price       Float
-  category    Category
-  ingredients Ingredient[]
-  variants    ProductVariant[]
+    id Int @id @default(autoincrement())
+
+    name        String
+    imageUrl    String
+    description String?
+    variations  ProductVariation[]
+    ingredients Ingredient[]
+
+    category   Category @relation(fields: [categoryId], references: [id])
+    categoryId Int
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+```
+
+#### ProductVariation (Вариации Продуктов)
+```prisma
+model ProductVariation {
+    id Int @id @default(autoincrement())
+
+    price     Int
+    size      Int?
+    pizzaType Int?
+
+    product   Product @relation(fields: [productId], references: [id])
+    productId Int
+
+    cartItems CartItem[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+```
+
+#### Ingredient (Ингридиенты)
+```prisma
+model Ingredient {
+    id Int @id @default(autoincrement())
+
+    name     String
+    price    Int
+    imageUrl String
+
+    products Product[]
+
+    cartItems CartItem[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+```
+
+#### Cart (Корзина)
+```prisma
+model Cart {
+    id Int @id @default(autoincrement())
+
+    user   User? @relation(fields: [userId], references: [id])
+    userId Int?  @unique
+
+    items CartItem[]
+
+    token String
+
+    totalAmount Int @default(0)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+```
+
+#### CartItem (Элемент корзины)
+```prisma
+model CartItem {
+    id Int @id @default(autoincrement())
+
+    productVariations  ProductVariation @relation(fields: [productVariationId], references: [id])
+    productVariationId Int
+
+    cart   Cart @relation(fields: [cartId], references: [id])
+    cartId Int
+
+    quantity Int @default(1)
+
+    ingredients Ingredient[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 ```
 
 #### Order (Заказ)
 ```prisma
 model Order {
-  id        String   @id @default(cuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  items     OrderItem[]
-  totalPrice Float
-  status    OrderStatus
-  createdAt DateTime @default(now())
+    id Int @id @default(autoincrement())
+
+    user   User? @relation(fields: [userId], references: [id])
+    userId Int?
+
+    token String
+
+    totalAmount Int
+    status      OrderStatus
+    paymentId   String?
+
+    items Json
+
+    fullName String
+    email    String
+    phone    String
+    address  String
+    comment  String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 ```
 
@@ -251,40 +353,6 @@ npm run prisma:studio
 ### Защищенные маршруты
 Для защиты маршрутов используется middleware Next.js:
 
-```typescript
-// middleware.ts
-export { default } from "next-auth/middleware"
-
-export const config = {
-  matcher: ["/profile/:path*", "/checkout/:path*"]
-}
-```
-
----
-
-## 🎯 Управление состоянием (Zustand)
-
-### Cart Store (Корзина)
-```typescript
-interface CartStore {
-  items: CartItem[]
-  addItem: (item: CartItem) => void
-  removeItem: (id: string) => void
-  updateQuantity: (id: string, quantity: number) => void
-  clearCart: () => void
-  totalPrice: number
-}
-```
-
-### User Store (Пользователь)
-```typescript
-interface UserStore {
-  user: User | null
-  setUser: (user: User) => void
-  clearUser: () => void
-}
-```
-
 ---
 
 ## 🔍 Фильтрация продуктов
@@ -311,73 +379,12 @@ CVC: любые 3 цифры
 
 ---
 
-## 📧 Email уведомления (Nodemailer)
-
-Проект отправляет email при:
-- Регистрации нового пользователя
-- Подтверждении заказа
-- Изменении статуса заказа
-
-Настройка в `.env`:
-```env
-SMTP_HOST="smtp.gmail.com"
-SMTP_USER="your-email@gmail.com"
-SMTP_PASSWORD="your-app-password"
-```
-
----
-
 ## 🎨 Стилизация (Tailwind CSS)
 
 Проект использует **Tailwind CSS** с дополнительными плагинами:
 - `tailwindcss-animate` - анимации
 - `tailwind-merge` - объединение классов
 - `class-variance-authority` - варианты компонентов
-
-### Пример использования
-```tsx
-import { cn } from "@/lib/utils"
-
-<div className={cn(
-  "rounded-lg p-4",
-  isActive && "bg-primary"
-)}>
-  Content
-</div>
-```
-
----
-
-## 🌐 API Routes
-
-### Основные endpoints
-
-#### Products
-```
-GET  /api/products       - Получить список продуктов
-GET  /api/products/:id   - Получить продукт по ID
-```
-
-#### Cart
-```
-POST /api/cart           - Добавить в корзину
-PUT  /api/cart/:id       - Обновить элемент корзины
-DELETE /api/cart/:id     - Удалить из корзины
-```
-
-#### Orders
-```
-POST /api/orders         - Создать заказ
-GET  /api/orders/:id     - Получить заказ по ID
-GET  /api/orders/user    - Получить заказы пользователя
-```
-
-#### Auth
-```
-POST /api/auth/register  - Регистрация
-POST /api/auth/login     - Вход
-POST /api/auth/logout    - Выход
-```
 
 ---
 
@@ -418,61 +425,20 @@ POST /api/auth/logout    - Выход
 
 Проект развернут на **Vercel**: [https://next-pizza-gamma-olive.vercel.app/](https://next-pizza-gamma-olive.vercel.app/)
 
-### Настройка для деплоя
-
-1. **Подключите репозиторий к Vercel**
-2. **Настройте переменные окружения** в Vercel Dashboard
-3. **Vercel автоматически:**
-   - Соберет проект
-   - Запустит Prisma generate
-   - Задеплоит приложение
-
-### Environment Variables в Vercel
-Добавьте все переменные из `.env` в настройках проекта на Vercel.
-
----
-
-## 📚 Полезные ссылки
-
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Prisma Documentation](https://www.prisma.io/docs)
-- [NextAuth.js Documentation](https://next-auth.js.org)
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
-- [Zustand Documentation](https://docs.pmnd.rs/zustand)
-- [Shadcn/ui Components](https://ui.shadcn.com)
-
----
-
 ## 🤝 Вклад в проект
 
 Это пет-проект, созданный в образовательных целях для демонстрации современного стека веб-разработки.
 
 ---
 
-## 📝 Лицензия
-
-Частный проект.
-
----
-
-## 👨‍💻 Автор
-
-Разработано как пет-проект для изучения Next.js, Prisma и современных практик веб-разработки.
-
----
-
 ## 🎯 Roadmap / Будущие улучшения
 
-- [ ] Добавление реальной платежной системы
 - [ ] Интеграция с картами для отслеживания доставки
-- [ ] Система лояльности и промокодов
 - [ ] Мобильное приложение
 - [ ] Админ-панель для управления продуктами
 - [ ] Отзывы и рейтинги продуктов
-- [ ] Push-уведомления о статусе заказа
-- [ ] Многоязычность (i18n)
 
 ---
 
-**Версия документации:** 1.0  
+**Версия документации:** 1.1  
 **Последнее обновление:** Ноябрь 2024
